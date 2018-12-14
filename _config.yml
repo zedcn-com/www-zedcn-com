@@ -76,6 +76,7 @@ pagination_dir: page
 # theme: landscape
 theme: cactus
 theme_config:
+  colorscheme: white
   projects_url: https://github.com/zedcn-com/www-zedcn-com
   social_links:
     github: https://github.com/ZeddG93
