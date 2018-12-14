@@ -76,7 +76,7 @@ pagination_dir: page
 # theme: landscape
 theme: cactus
 theme_config:
-  projects_url: https://github.com/zedcn-com
+  projects_url: https://github.com/zedcn-com/www-zedcn-com
   social_links:
     github: https://github.com/ZeddG93
     telegram: https://t.me/java_android_dev
@@ -98,7 +98,7 @@ theme_config:
   nav:
     home: /
     articles: /archives/
-    projects: projects_url
+    projects: https://github.com/zedcn-com/www-zedcn-com
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
