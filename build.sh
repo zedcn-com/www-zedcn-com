@@ -1,5 +1,5 @@
-hexo clean
-hexo generate
+npx hexo clean
+npx hexo generate
 rsync -av --delete --exclude=CNAME public/ docs/
 git add *
 git stage *
