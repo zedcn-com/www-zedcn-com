@@ -13,7 +13,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://www.zedcn.com
+url: https://www.zedd.dev
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -81,9 +81,9 @@ theme_config:
   social_links:
     github: https://github.com/ZeddG93
     telegram: https://t.me/java_android_dev
-    mail: mailto:dev@zedcn.com
+    mail: mailto:dev@zedd.dev
   gravatar:
-    email: dev@zedcn.com
+    email: dev@zedd.dev
   logo:
     enabled: true
     width: 50
@@ -99,7 +99,7 @@ theme_config:
   nav:
     home: /
     articles: /archives/
-    projects: https://github.com/zedcn-com/www-zedcn-com
+    projects: https://github.com/zedd-dev/www
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
