@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="最近新一代的快递员模拟器《Apex英雄》比较火，打算上去给大家送送快递温暖人心。然而Origin不让我顺利送快递，直接安装好客户端下载游戏时不断提示”發生了一個無法預期的錯誤。請稍後再試。錯誤: -4:302“。 为了解决这个问题，进行了很多监控调试，尝试了网上的几个方案，最后得到了一个比较合适的解决办法。 请注意：各地网络情况可能导致最后效果并不一定相同 如果想直接看到我的最终解决方案，请点此">
+<meta name="keywords" content="network">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分析和解决Origin下载提示错误-4:302">
+<meta property="og:url" content="https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/index.html">
+<meta property="og:site_name" content="Zed Blogs">
+<meta property="og:description" content="最近新一代的快递员模拟器《Apex英雄》比较火，打算上去给大家送送快递温暖人心。然而Origin不让我顺利送快递，直接安装好客户端下载游戏时不断提示”發生了一個無法預期的錯誤。請稍後再試。錯誤: -4:302“。 为了解决这个问题，进行了很多监控调试，尝试了网上的几个方案，最后得到了一个比较合适的解决办法。 请注意：各地网络情况可能导致最后效果并不一定相同 如果想直接看到我的最终解决方案，请点此">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/ea-302.png">
+<meta property="og:image" content="https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/akamai-302.png">
+<meta property="og:updated_time" content="2019-09-30T15:36:27.514Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="分析和解决Origin下载提示错误-4:302">
+<meta name="twitter:description" content="最近新一代的快递员模拟器《Apex英雄》比较火，打算上去给大家送送快递温暖人心。然而Origin不让我顺利送快递，直接安装好客户端下载游戏时不断提示”發生了一個無法預期的錯誤。請稍後再試。錯誤: -4:302“。 为了解决这个问题，进行了很多监控调试，尝试了网上的几个方案，最后得到了一个比较合适的解决办法。 请注意：各地网络情况可能导致最后效果并不一定相同 如果想直接看到我的最终解决方案，请点此">
+<meta name="twitter:image" content="https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/ea-302.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="https://www.gravatar.com/avatar/c7c8a86dc132185197ac5fe80ace05cd?s=16">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/c7c8a86dc132185197ac5fe80ace05cd?s=192" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="https://www.gravatar.com/avatar/c7c8a86dc132185197ac5fe80ace05cd?s=180">
+          
+        
+    
+    <!-- title -->
+    <title>分析和解决Origin下载提示错误-4:302</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/zedd-dev/www">项目</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2018/09/17/如何在使用SSH协议的git操作的时候使用代理服务器/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/&text=分析和解决Origin下载提示错误-4:302"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/&title=分析和解决Origin下载提示错误-4:302"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/&is_video=false&description=分析和解决Origin下载提示错误-4:302"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=分析和解决Origin下载提示错误-4:302&body=Check out this article: https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/&title=分析和解决Origin下载提示错误-4:302"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/&title=分析和解决Origin下载提示错误-4:302"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/&title=分析和解决Origin下载提示错误-4:302"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/&title=分析和解决Origin下载提示错误-4:302"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/&name=分析和解决Origin下载提示错误-4:302&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-初步尝试"><span class="toc-number">1.</span> <span class="toc-text">1 初步尝试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-找到问题"><span class="toc-number">2.</span> <span class="toc-text">2 找到问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-换一个CDN？"><span class="toc-number">3.</span> <span class="toc-text">3 换一个CDN？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-安全模式"><span class="toc-number">4.</span> <span class="toc-text">4 安全模式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-DNS"><span class="toc-number">5.</span> <span class="toc-text">5 DNS</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-总结"><span class="toc-number">6.</span> <span class="toc-text">6 总结 </span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        分析和解决Origin下载提示错误-4:302
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Zed Blogs</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2019-02-28T18:25:16.000Z" itemprop="datePublished">2019-02-28</time>
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/日常/">日常</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/network/">network</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>最近新一代的快递员模拟器《Apex英雄》比较火，打算上去给大家送送快递温暖人心。<br>然而Origin不让我顺利送快递，直接安装好客户端下载游戏时不断提示”發生了一個無法預期的錯誤。請稍後再試。錯誤: -4:302“。</p>
+<p>为了解决这个问题，进行了很多监控调试，尝试了网上的几个方案，最后得到了一个比较合适的解决办法。</p>
+<p><strong>请注意：各地网络情况可能导致最后效果并不一定相同</strong></p>
+<p>如果想直接看到我的最终解决方案，请<a href="#6">点此</a></p>
+<hr>
+<h1 id="1-初步尝试"><a href="#1-初步尝试" class="headerlink" title="1 初步尝试"></a>1 初步尝试</h1><p>对于这些国际的游戏客户端，出现下载问题第一反应应该就是被RST了。所以我第一时间沿袭了魔法的姿势完成了游戏下载。<br>但是这样会消耗很多的魔法力（流量），毕竟一个客户端就几十G，而且听说其他人下载还是有正常的，所以不太像是直接被RST了。</p>
+<h1 id="2-找到问题"><a href="#2-找到问题" class="headerlink" title="2 找到问题"></a>2 找到问题</h1><p>打开抓包工具<strong>Fiddler4</strong>看一下下载时到底发生了什么。</p>
+<p><img src="./ea-302.png" alt="EA CDN 302"></p>
+<p>原来是EA的下载CDN做了一个重定向，从<code>http://lvlt.cdn.ea.com/***</code>定向到<code>http://120.52.**.**/lvlt.cdn.ea.com/***</code>。</p>
+<blockquote>
+<p>update: 这个102.52.51.0/24段的IP是联通的缓存劫持。<a href="https://www.v2ex.com/t/537381" target="_blank" rel="noopener">来源</a></p>
+</blockquote>
+<p><del>那么看起来这应该是EA对国内CDN的一个部署，没有用DNS解析到国内节点IP的方式，而是直接重定向到国内的节点IP域名，</del>这是被联通做了HTTP缓存劫持了，Origin客户端并不支持重定向。<br>随后我又使用魔法姿势然后抓包，正常下载确实没有重定向，而是直接下载文件，所以客户端就没有报错了。</p>
+<h1 id="3-换一个CDN？"><a href="#3-换一个CDN？" class="headerlink" title="3 换一个CDN？"></a>3 换一个CDN？</h1><p>根据一个女装群大佬们的说法，修改<code>EACore.ini</code>这个文件使用<strong>Akamai</strong>的CDN下载。<br>然而结果还是直接报错，抓包看跟EA自己的CDN走向一样。</p>
+<p><img src="./akamai-302.png" alt="Akamai CDN 302"></p>
+<p>Akamai的CDN也是用302直接重定向到<del>国内的节点</del>联通缓存劫持IP。从<code>http://origin-a.akamaihd.net/***</code>定向到了<code>http://59.80.44.100/origin-a.akamaihd.net/***</code>。</p>
+<h1 id="4-安全模式"><a href="#4-安全模式" class="headerlink" title="4 安全模式"></a>4 安全模式</h1><p>既然两个CDN直接走都不行，那就只能尝试Origin设置里的安全模式下载了。<br>根据官方的说法，这个模式会降低速度，然而抓包后发现这个所谓安全模式，其实就是让CDN连接走Https。<br>理论上应该是影响不大，毕竟CDN部署全Https已经不是新鲜事了。<br>但是一开始我还原Origin以后，直接打开这个模式确实速度很慢，不到1MB/s左右的下载。</p>
+<h1 id="5-DNS"><a href="#5-DNS" class="headerlink" title="5 DNS"></a>5 DNS</h1><p>根据以往经验来看，应该就是解析到的节点的问题了。通过抓包，得出EA的HttpsCDN域名是<code>ssl-lvlt.cdn.ea.com</code>。<br>使用<code>dig</code>命令分别用国内的DNS和<code>1.1.1.1</code>解析得到的都是美国的Level3的IP。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">~ took 14s</span><br><span class="line">➜ dig ssl-lvlt.cdn.ea.com @1.0.0.1</span><br><span class="line"></span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.11.3-1ubuntu1.5-Ubuntu &lt;&lt;&gt;&gt; ssl-lvlt.cdn.ea.com @1.0.0.1</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 15767</span><br><span class="line">;; flags: qr rd ra; QUERY: 1, ANSWER: 4, AUTHORITY: 0, ADDITIONAL: 1</span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 1452</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;ssl-lvlt.cdn.ea.com.           IN      A</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">ssl-lvlt.cdn.ea.com.    147     IN      CNAME   ssl-lvlt.cdn.ea.com.c.footprint.net.</span><br><span class="line">ssl-lvlt.cdn.ea.com.c.footprint.net. 60 IN A    67.24.137.250</span><br><span class="line">ssl-lvlt.cdn.ea.com.c.footprint.net. 60 IN A    67.24.141.250</span><br><span class="line">ssl-lvlt.cdn.ea.com.c.footprint.net. 60 IN A    67.24.105.250</span><br><span class="line"></span><br><span class="line">;; Query time: 214 msec</span><br><span class="line">;; SERVER: 1.0.0.1#53(1.0.0.1)</span><br><span class="line">;; WHEN: Thu Feb 28 19:01:45 DST 2019</span><br><span class="line">;; MSG SIZE  rcvd: 145</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">~</span><br><span class="line">➜ geoip 67.24.137.250</span><br><span class="line">["美国","美国","","","level3.com"]</span><br><span class="line"></span><br><span class="line">~</span><br><span class="line">➜ dig ssl-lvlt.cdn.ea.com @114.114.114.114</span><br><span class="line"></span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.11.3-1ubuntu1.5-Ubuntu &lt;&lt;&gt;&gt; ssl-lvlt.cdn.ea.com @114.114.114.114</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 9648</span><br><span class="line">;; flags: qr rd ra; QUERY: 1, ANSWER: 4, AUTHORITY: 0, ADDITIONAL: 1</span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 4096</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;ssl-lvlt.cdn.ea.com.           IN      A</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">ssl-lvlt.cdn.ea.com.    33      IN      CNAME   ssl-lvlt.cdn.ea.com.c.footprint.net.</span><br><span class="line">ssl-lvlt.cdn.ea.com.c.footprint.net. 33 IN A    8.253.129.53</span><br><span class="line">ssl-lvlt.cdn.ea.com.c.footprint.net. 33 IN A    67.27.1.247</span><br><span class="line">ssl-lvlt.cdn.ea.com.c.footprint.net. 33 IN A    8.253.129.77</span><br><span class="line"></span><br><span class="line">;; Query time: 15 msec</span><br><span class="line">;; SERVER: 114.114.114.114#53(114.114.114.114)</span><br><span class="line">;; WHEN: Thu Feb 28 19:03:03 DST 2019</span><br><span class="line">;; MSG SIZE  rcvd: 145</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">~</span><br><span class="line">➜ geoip 8.253.129.53</span><br><span class="line">["美国","加利福尼亚州","洛杉矶","","level3.com"]</span><br></pre></td></tr></table></figure>
+
+<p>然后随即强制使用Akamai的CDN，Akamai在安全模式下使用的域名是<code>origin-a.akamaihd.net</code>。<br>然后跟上面一样，分别用国内和1111解析。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">~ </span><br><span class="line">➜ dig origin-a.akamaihd.net @1.0.0.1                               </span><br><span class="line"></span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.11.3-1ubuntu1.5-Ubuntu &lt;&lt;&gt;&gt; origin-a.akamaihd.net @1.0.0.1</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 40236</span><br><span class="line">;; flags: qr rd ra; QUERY: 1, ANSWER: 4, AUTHORITY: 0, ADDITIONAL: 1</span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 1452</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;origin-a.akamaihd.net.         IN      A</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">origin-a.akamaihd.net.  94      IN      CNAME   origin-a.akamaihd.net.edgesuite.net. </span><br><span class="line">origin-a.akamaihd.net.edgesuite.net. 6636 IN CNAME a1750.w27.akamai.net.</span><br><span class="line">a1750.w27.akamai.net.   20      IN      A       23.55.37.113</span><br><span class="line">a1750.w27.akamai.net.   20      IN      A       23.55.37.89</span><br><span class="line"></span><br><span class="line">;; Query time: 202 msec</span><br><span class="line">;; SERVER: 1.0.0.1#53(1.0.0.1)</span><br><span class="line">;; WHEN: Thu Feb 28 19:07:18 DST 2019</span><br><span class="line">;; MSG SIZE  rcvd: 159</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">~ </span><br><span class="line">➜ geoip 23.55.37.113</span><br><span class="line">["美国","加利福尼亚州","洛杉矶","","akamai.com"] </span><br><span class="line"> </span><br><span class="line">~ </span><br><span class="line">➜ dig origin-a.akamaihd.net @114.114.114.114 </span><br><span class="line"></span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.11.3-1ubuntu1.5-Ubuntu &lt;&lt;&gt;&gt; origin-a.akamaihd.net @114.114.114.114 </span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 23199</span><br><span class="line">;; flags: qr rd ra; QUERY: 1, ANSWER: 10, AUTHORITY: 0, ADDITIONAL: 1</span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 4096</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;origin-a.akamaihd.net.         IN      A</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">origin-a.akamaihd.net.  33      IN      CNAME   origin-a.akamaihd.net.edgesuite.net.</span><br><span class="line">origin-a.akamaihd.net.edgesuite.net. 33 IN CNAME a1750.w27.akamai.net.</span><br><span class="line">a1750.w27.akamai.net.   33      IN      A       124.40.41.85</span><br><span class="line">a1750.w27.akamai.net.   33      IN      A       124.40.41.75</span><br><span class="line">a1750.w27.akamai.net.   33      IN      A       124.40.41.84</span><br><span class="line">a1750.w27.akamai.net.   33      IN      A       124.40.41.76</span><br><span class="line">a1750.w27.akamai.net.   33      IN      A       124.40.41.9</span><br><span class="line">a1750.w27.akamai.net.   33      IN      A       124.40.41.17</span><br><span class="line">a1750.w27.akamai.net.   33      IN      A       124.40.41.86</span><br><span class="line">a1750.w27.akamai.net.   33      IN      A       124.40.41.6</span><br><span class="line"></span><br><span class="line">;; Query time: 18 msec</span><br><span class="line">;; SERVER: 114.114.114.114#53(114.114.114.114)</span><br><span class="line">;; WHEN: Thu Feb 28 19:07:34 DST 2019</span><br><span class="line">;; MSG SIZE  rcvd: 255</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">~ </span><br><span class="line">➜ </span><br><span class="line"></span><br><span class="line">~ </span><br><span class="line">➜ geoip 124.40.41.85</span><br><span class="line">["日本","大阪府","大阪","","ntt.com"]</span><br></pre></td></tr></table></figure>
+
+<p>基本上问题到这里就算是有一个解了。使用安全模式加上Akamai的日本节点，下载应该没有问题了。<br>抓了一个链接用wget测试了一下大概能在5MB/s，虽然不够快，但也还算能接受了。<br>所以立马打开路由器，增加一条Dnsmasq规则<code>server=/origin-a.akamaihd.net/114.114.114.114</code>，保证这个域名能解析到日本的节点上。</p>
+<p>至此，这个问题基本上就算是解决了。</p>
+<h1 id="6-总结"><a href="#6-总结" class="headerlink" title="6 总结 "></a>6 总结 <a name="6"></a></h1><p>在不考虑用魔法姿势下载的情况下，做以下修改应该能保证一个可接受的速度下载：</p>
+<ul>
+<li><p>修改<code>EACore.ini</code>启动Akamai的CDN。</p>
+  <figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="section">[connection]</span></span><br><span class="line"><span class="attr">EnvironmentName</span>=production</span><br><span class="line"><span class="section">[Feature]</span></span><br><span class="line"><span class="attr">CdnOverride</span>=akamai</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打开Origin的安全模式下载</p>
+</li>
+<li><p>保证<code>origin-a.akamaihd.net</code>域名解析到日本节点</p>
+<ul>
+<li>如果你什么代理/DNS工具都没有使用，可以更换常见的几个公共DNS并用nslookup测试解析。<a href="https://www.ip.cn/dns.html" target="_blank" rel="noopener">国内DNS列表</a></li>
+<li>如果你使用了Dnsmasq，那么增加一条<code>server=/origin-a.akamaihd.net/114.114.114.114</code>。</li>
+<li>如果你使用了Pac代理（比如酸爽），则在user-list里增加<code>@@||origin-a.akamaihd.net^</code>使其不从远程服务器解析。</li>
+<li>其他方案请自行解决。</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/zedd-dev/www">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-初步尝试"><span class="toc-number">1.</span> <span class="toc-text">1 初步尝试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-找到问题"><span class="toc-number">2.</span> <span class="toc-text">2 找到问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-换一个CDN？"><span class="toc-number">3.</span> <span class="toc-text">3 换一个CDN？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-安全模式"><span class="toc-number">4.</span> <span class="toc-text">4 安全模式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-DNS"><span class="toc-number">5.</span> <span class="toc-text">5 DNS</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-总结"><span class="toc-number">6.</span> <span class="toc-text">6 总结 </span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/&text=分析和解决Origin下载提示错误-4:302"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/&title=分析和解决Origin下载提示错误-4:302"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/&is_video=false&description=分析和解决Origin下载提示错误-4:302"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=分析和解决Origin下载提示错误-4:302&body=Check out this article: https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/&title=分析和解决Origin下载提示错误-4:302"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/&title=分析和解决Origin下载提示错误-4:302"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/&title=分析和解决Origin下载提示错误-4:302"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/&title=分析和解决Origin下载提示错误-4:302"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://www.zedd.dev/2019/02/28/分析和解决Origin下载提示错误-4-302/&name=分析和解决Origin下载提示错误-4:302&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 Zed
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/zedd-dev/www">项目</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
