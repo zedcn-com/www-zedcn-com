@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="开发环境 使用较新的IntelliJ IDEA版本（2019.2） 使用Gradle作为项目构建工具 调试tomcat应用，并使用war(exploded)作为部署项以便热更新  故障现象在即使是指定运行Build Artifacts选中带(exploded)条目后也不生成exploded文件夹 ❯ tree -L 2.├── classes│   └── java├── generated│">
+<meta name="keywords" content="Java,IntelliJ IDEA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解决IntelliJ下调试时不生成war exploded文件夹的问题">
+<meta property="og:url" content="https:&#x2F;&#x2F;www.zedd.dev&#x2F;2019&#x2F;11&#x2F;28&#x2F;%E8%A7%A3%E5%86%B3IntelliJ%E4%B8%8B%E8%B0%83%E8%AF%95%E6%97%B6%E4%B8%8D%E7%94%9F%E6%88%90war-exploded%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%97%AE%E9%A2%98&#x2F;index.html">
+<meta property="og:site_name" content="Zed Blogs">
+<meta property="og:description" content="开发环境 使用较新的IntelliJ IDEA版本（2019.2） 使用Gradle作为项目构建工具 调试tomcat应用，并使用war(exploded)作为部署项以便热更新  故障现象在即使是指定运行Build Artifacts选中带(exploded)条目后也不生成exploded文件夹 ❯ tree -L 2.├── classes│   └── java├── generated│">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-28T12:34:52.166Z">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="https://www.gravatar.com/avatar/c7c8a86dc132185197ac5fe80ace05cd?s=16">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="https://www.gravatar.com/avatar/c7c8a86dc132185197ac5fe80ace05cd?s=192" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="https://www.gravatar.com/avatar/c7c8a86dc132185197ac5fe80ace05cd?s=180">
+          
+        
+    
+    <!-- title -->
+    <title>解决IntelliJ下调试时不生成war exploded文件夹的问题</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/zedd-dev/www" target="_blank" rel="noopener">项目</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2019/02/28/%E5%88%86%E6%9E%90%E5%92%8C%E8%A7%A3%E5%86%B3Origin%E4%B8%8B%E8%BD%BD%E6%8F%90%E7%A4%BA%E9%94%99%E8%AF%AF-4-302/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://www.zedd.dev/2019/11/28/%E8%A7%A3%E5%86%B3IntelliJ%E4%B8%8B%E8%B0%83%E8%AF%95%E6%97%B6%E4%B8%8D%E7%94%9F%E6%88%90war-exploded%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%97%AE%E9%A2%98/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://www.zedd.dev/2019/11/28/%E8%A7%A3%E5%86%B3IntelliJ%E4%B8%8B%E8%B0%83%E8%AF%95%E6%97%B6%E4%B8%8D%E7%94%9F%E6%88%90war-exploded%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%97%AE%E9%A2%98/&text=解决IntelliJ下调试时不生成war exploded文件夹的问题" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://www.zedd.dev/2019/11/28/%E8%A7%A3%E5%86%B3IntelliJ%E4%B8%8B%E8%B0%83%E8%AF%95%E6%97%B6%E4%B8%8D%E7%94%9F%E6%88%90war-exploded%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%97%AE%E9%A2%98/&title=解决IntelliJ下调试时不生成war exploded文件夹的问题" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.zedd.dev/2019/11/28/%E8%A7%A3%E5%86%B3IntelliJ%E4%B8%8B%E8%B0%83%E8%AF%95%E6%97%B6%E4%B8%8D%E7%94%9F%E6%88%90war-exploded%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%97%AE%E9%A2%98/&is_video=false&description=解决IntelliJ下调试时不生成war exploded文件夹的问题" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=解决IntelliJ下调试时不生成war exploded文件夹的问题&body=Check out this article: https://www.zedd.dev/2019/11/28/%E8%A7%A3%E5%86%B3IntelliJ%E4%B8%8B%E8%B0%83%E8%AF%95%E6%97%B6%E4%B8%8D%E7%94%9F%E6%88%90war-exploded%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%97%AE%E9%A2%98/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://www.zedd.dev/2019/11/28/%E8%A7%A3%E5%86%B3IntelliJ%E4%B8%8B%E8%B0%83%E8%AF%95%E6%97%B6%E4%B8%8D%E7%94%9F%E6%88%90war-exploded%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%97%AE%E9%A2%98/&title=解决IntelliJ下调试时不生成war exploded文件夹的问题" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://www.zedd.dev/2019/11/28/%E8%A7%A3%E5%86%B3IntelliJ%E4%B8%8B%E8%B0%83%E8%AF%95%E6%97%B6%E4%B8%8D%E7%94%9F%E6%88%90war-exploded%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%97%AE%E9%A2%98/&title=解决IntelliJ下调试时不生成war exploded文件夹的问题" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://www.zedd.dev/2019/11/28/%E8%A7%A3%E5%86%B3IntelliJ%E4%B8%8B%E8%B0%83%E8%AF%95%E6%97%B6%E4%B8%8D%E7%94%9F%E6%88%90war-exploded%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%97%AE%E9%A2%98/&title=解决IntelliJ下调试时不生成war exploded文件夹的问题" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://www.zedd.dev/2019/11/28/%E8%A7%A3%E5%86%B3IntelliJ%E4%B8%8B%E8%B0%83%E8%AF%95%E6%97%B6%E4%B8%8D%E7%94%9F%E6%88%90war-exploded%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%97%AE%E9%A2%98/&title=解决IntelliJ下调试时不生成war exploded文件夹的问题" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://www.zedd.dev/2019/11/28/%E8%A7%A3%E5%86%B3IntelliJ%E4%B8%8B%E8%B0%83%E8%AF%95%E6%97%B6%E4%B8%8D%E7%94%9F%E6%88%90war-exploded%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%97%AE%E9%A2%98/&name=解决IntelliJ下调试时不生成war exploded文件夹的问题&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#开发环境"><span class="toc-number">1.</span> <span class="toc-text">开发环境</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#故障现象"><span class="toc-number">2.</span> <span class="toc-text">故障现象</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#解决方法"><span class="toc-number">3.</span> <span class="toc-text">解决方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        解决IntelliJ下调试时不生成war exploded文件夹的问题
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Zed Blogs</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2019-11-28T20:09:40.000Z" itemprop="datePublished">2019-11-28</time>
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%BC%80%E5%8F%91%E6%97%A5%E5%B8%B8/">开发日常</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/IntelliJ-IDEA/" rel="tag">IntelliJ IDEA</a>, <a class="tag-link" href="/tags/Java/" rel="tag">Java</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><ul>
+<li>使用较新的IntelliJ IDEA版本（2019.2）</li>
+<li>使用Gradle作为项目构建工具</li>
+<li>调试tomcat应用，并使用war(exploded)作为部署项以便热更新</li>
+</ul>
+<h1 id="故障现象"><a href="#故障现象" class="headerlink" title="故障现象"></a>故障现象</h1><p>在即使是指定运行Build Artifacts选中带(exploded)条目后也不生成exploded文件夹</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">❯ tree -L 2</span></pre></td></tr><tr><td class="code"><pre><span class="line">.</span></pre></td></tr><tr><td class="code"><pre><span class="line">├── classes</span></pre></td></tr><tr><td class="code"><pre><span class="line">│   └── java</span></pre></td></tr><tr><td class="code"><pre><span class="line">├── generated</span></pre></td></tr><tr><td class="code"><pre><span class="line">│   └── sources</span></pre></td></tr><tr><td class="code"><pre><span class="line">├── libs</span></pre></td></tr><tr><td class="code"><pre><span class="line">│   └── server-4.1.22.war</span></pre></td></tr><tr><td class="code"><pre><span class="line">├── resources</span></pre></td></tr><tr><td class="code"><pre><span class="line">│   └── main</span></pre></td></tr><tr><td class="code"><pre><span class="line">└── tmp</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ├── compileJava</span></pre></td></tr><tr><td class="code"><pre><span class="line">    └── war</span></pre></td></tr></table></figure>
+
+
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><ul>
+<li><p>2019.2之后的版本：</p>
+<ol>
+<li>打开项目</li>
+<li>打开IDE设置 <code>Ctrl+Alt+S</code></li>
+<li>依次展开 <code>Build, ...</code> <code>Build Tools</code>菜单</li>
+<li>点击<code>Gradle</code>子项</li>
+<li>把<code>Build and run using</code>改成<code>IntelliJ IDEA</code></li>
+<li>保存</li>
+</ol>
+</li>
+<li><p>之前的版本：<br>  相同位置取消勾选<code>Delegate IDE build/run actions to gradle</code></p>
+</li>
+</ul>
+<p>重新构建之后结果</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">❯ tree -L 2</span></pre></td></tr><tr><td class="code"><pre><span class="line">.</span></pre></td></tr><tr><td class="code"><pre><span class="line">├── classes</span></pre></td></tr><tr><td class="code"><pre><span class="line">│   └── java</span></pre></td></tr><tr><td class="code"><pre><span class="line">├── generated</span></pre></td></tr><tr><td class="code"><pre><span class="line">│   └── sources</span></pre></td></tr><tr><td class="code"><pre><span class="line">├── libs</span></pre></td></tr><tr><td class="code"><pre><span class="line">|   ├── exploded</span></pre></td></tr><tr><td class="code"><pre><span class="line">│   └── server-4.1.22.war</span></pre></td></tr><tr><td class="code"><pre><span class="line">├── resources</span></pre></td></tr><tr><td class="code"><pre><span class="line">│   └── main</span></pre></td></tr><tr><td class="code"><pre><span class="line">└── tmp</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ├── compileJava</span></pre></td></tr><tr><td class="code"><pre><span class="line">    └── war</span></pre></td></tr></table></figure>
+
+
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
+<li><p><a href="https://stackoverflow.com/questions/47078199/intellij-fails-deploying-exploded-war-to-tomcat" target="_blank" rel="noopener">StackOverFlow</a></p>
+</li>
+<li><p><a href="https://youtrack.jetbrains.com/issue/IDEA-176700" target="_blank" rel="noopener">官方Issue</a></p>
+</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/zedd-dev/www" target="_blank" rel="noopener">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#开发环境"><span class="toc-number">1.</span> <span class="toc-text">开发环境</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#故障现象"><span class="toc-number">2.</span> <span class="toc-text">故障现象</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#解决方法"><span class="toc-number">3.</span> <span class="toc-text">解决方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://www.zedd.dev/2019/11/28/%E8%A7%A3%E5%86%B3IntelliJ%E4%B8%8B%E8%B0%83%E8%AF%95%E6%97%B6%E4%B8%8D%E7%94%9F%E6%88%90war-exploded%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%97%AE%E9%A2%98/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://www.zedd.dev/2019/11/28/%E8%A7%A3%E5%86%B3IntelliJ%E4%B8%8B%E8%B0%83%E8%AF%95%E6%97%B6%E4%B8%8D%E7%94%9F%E6%88%90war-exploded%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%97%AE%E9%A2%98/&text=解决IntelliJ下调试时不生成war exploded文件夹的问题" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://www.zedd.dev/2019/11/28/%E8%A7%A3%E5%86%B3IntelliJ%E4%B8%8B%E8%B0%83%E8%AF%95%E6%97%B6%E4%B8%8D%E7%94%9F%E6%88%90war-exploded%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%97%AE%E9%A2%98/&title=解决IntelliJ下调试时不生成war exploded文件夹的问题" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.zedd.dev/2019/11/28/%E8%A7%A3%E5%86%B3IntelliJ%E4%B8%8B%E8%B0%83%E8%AF%95%E6%97%B6%E4%B8%8D%E7%94%9F%E6%88%90war-exploded%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%97%AE%E9%A2%98/&is_video=false&description=解决IntelliJ下调试时不生成war exploded文件夹的问题" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=解决IntelliJ下调试时不生成war exploded文件夹的问题&body=Check out this article: https://www.zedd.dev/2019/11/28/%E8%A7%A3%E5%86%B3IntelliJ%E4%B8%8B%E8%B0%83%E8%AF%95%E6%97%B6%E4%B8%8D%E7%94%9F%E6%88%90war-exploded%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%97%AE%E9%A2%98/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://www.zedd.dev/2019/11/28/%E8%A7%A3%E5%86%B3IntelliJ%E4%B8%8B%E8%B0%83%E8%AF%95%E6%97%B6%E4%B8%8D%E7%94%9F%E6%88%90war-exploded%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%97%AE%E9%A2%98/&title=解决IntelliJ下调试时不生成war exploded文件夹的问题" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://www.zedd.dev/2019/11/28/%E8%A7%A3%E5%86%B3IntelliJ%E4%B8%8B%E8%B0%83%E8%AF%95%E6%97%B6%E4%B8%8D%E7%94%9F%E6%88%90war-exploded%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%97%AE%E9%A2%98/&title=解决IntelliJ下调试时不生成war exploded文件夹的问题" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://www.zedd.dev/2019/11/28/%E8%A7%A3%E5%86%B3IntelliJ%E4%B8%8B%E8%B0%83%E8%AF%95%E6%97%B6%E4%B8%8D%E7%94%9F%E6%88%90war-exploded%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%97%AE%E9%A2%98/&title=解决IntelliJ下调试时不生成war exploded文件夹的问题" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://www.zedd.dev/2019/11/28/%E8%A7%A3%E5%86%B3IntelliJ%E4%B8%8B%E8%B0%83%E8%AF%95%E6%97%B6%E4%B8%8D%E7%94%9F%E6%88%90war-exploded%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%97%AE%E9%A2%98/&title=解决IntelliJ下调试时不生成war exploded文件夹的问题" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://www.zedd.dev/2019/11/28/%E8%A7%A3%E5%86%B3IntelliJ%E4%B8%8B%E8%B0%83%E8%AF%95%E6%97%B6%E4%B8%8D%E7%94%9F%E6%88%90war-exploded%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%97%AE%E9%A2%98/&name=解决IntelliJ下调试时不生成war exploded文件夹的问题&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 Zed
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/zedd-dev/www" target="_blank" rel="noopener">项目</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
